@@ -8,31 +8,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class CalculateController {
 
     @GetMapping("/sum")
-    public int sum(@RequestParam("a") String a, @RequestParam("b") String b) {
+    public String sum(@RequestParam("a") String a, @RequestParam("b") String b) {
         int sum = Integer.parseInt(a) + Integer.parseInt(b);
 
-        return sum;
+        return String.valueOf(sum);
     }
 
     @GetMapping("/minus")
-    public int minus(@RequestParam("a") String a, @RequestParam("b") String b) {
-        int sum = Integer.parseInt(a) - Integer.parseInt(b);
+    public String minus(@RequestParam("a") String a, @RequestParam("b") String b) {
+        int minus = Integer.parseInt(a) - Integer.parseInt(b);
 
-        return sum;
+        return String.valueOf(minus);
     }
 
     @GetMapping("/divide")
-    public int divide(@RequestParam("a") String a, @RequestParam("b") String b) {
-        int sum = Integer.parseInt(a) / Integer.parseInt(b);
+    public String divide(@RequestParam("a") String a, @RequestParam("b") String b) {
+        int divide = Integer.parseInt(a) / Integer.parseInt(b);
 
-        return sum;
+        return String.valueOf(divide);
     }
 
     @GetMapping("/multiply")
-    public int multiply(@RequestParam("a") String a, @RequestParam("b") String b) {
-        int sum = Integer.parseInt(a) * Integer.parseInt(b);
+    public String multiply(@RequestParam("a") String a, @RequestParam("b") String b) {
+        int multiply = Integer.parseInt(a) * Integer.parseInt(b);
 
-        return sum;
+        return String.valueOf(multiply);
     }
 
 }
