@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .chat-container {
+            width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .chat-box {
+            overflow-y: scroll;
+            height: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .user-message {
+            background-color: #e6f2ff;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .bot-message {
+            background-color: #f0f0f0;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .input-box {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        <div class="bot-message">안녕하세요! 대화를 시작해보세요.</div>
+    </div>
+    <div class="input-box">
+        <input type="text" id="user-input" placeholder="메시지를 입력하세요...">
+        <button onclick="sendMessage()">전송</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+        var userInput = document.getElementById("user-input").value;
+        var chatBox = document.getElementById("chat-box");
+
+        // 사용자 메시지를 추가
+        var userMessageDiv = document.createElement("div");
+        userMessageDiv.classList.add("user-message");
+        userMessageDiv.textContent = userInput;
+        chatBox.appendChild(userMessageDiv);
+
+        // 대화 응답 (임시로 봇 응답)
+        var botMessageDiv = document.createElement("div");
+        botMessageDiv.classList.add("bot-message");
+        botMessageDiv.textContent = "죄송합니다. 아직 대화 기능은 구현되지 않았습니다.";
+        chatBox.appendChild(botMessageDiv);
+
+        // 사용자 입력 필드 비우기
+        document.getElementById("user-input").value = "";
+
+        // 스크롤 맨 아래로 이동
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
+</body>
+</html>
