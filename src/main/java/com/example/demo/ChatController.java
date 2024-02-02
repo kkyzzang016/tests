@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class CalculateController {
 
-    @GetMapping("chat")
+    @GetMapping("/chat")
     public String chat() {
 
         return "chatInterface";
