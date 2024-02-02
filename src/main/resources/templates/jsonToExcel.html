@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-box {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .input-box {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #jsonDataInput {
+            width: 100%;
+            height: 50vh; /* 고정된 높이 */
+            overflow-y: auto; /* 스크롤 생김 */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none; /* 크기 조절 비활성화 */
+        }
+
+        #filePathInput{
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none; /* 크기 조절 비활성화 */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            align-items: center;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        <div class="bot-message">JSON 데이터를 입력하고 "JSON 데이터 적용" 버튼을 클릭하세요. 그 후 "엑셀 내보내기" 버튼을 클릭하면 입력한 데이터를 엑셀 파일로 내보낼 수 있습니다.</div>
+    </div>
+    <div class="input-box">
+        <textarea id="jsonDataInput" placeholder="JSON 데이터를 입력하세요..."></textarea>
+        <input type="text" id="filePathInput" placeholder="저장할 파일 경로를 입력하세요..." />
+            <div class="button-container">
+            <button onclick="exportToExcel()">엑셀 내보내기</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+<script>
+    let jsonData = {};
+
+    function exportToExcel() {
+
+        const jsonDataInput = document.getElementById("jsonDataInput").value;
+        try {
+            jsonData = JSON.parse(jsonDataInput);
+            // console.log("JSON 데이터가 적용되었습니다.", jsonData);
+        } catch (error) {
+            console.error("JSON 데이터 파싱 오류:", error);
+            alert("입력한 데이터가 올바른 JSON 형식이 아닙니다.");
+            return;
+        }
+
+        if (Object.keys(jsonData).length === 0) {
+            alert("적용된 JSON 데이터가 없습니다. 먼저 JSON 데이터를 입력하고 적용하세요.");
+            return;
+        }
+
+        const filePath = document.getElementById("filePathInput").value;
+        if (!filePath) {
+            alert("저장할 파일 경로를 입력하세요.");
+            return;
+        }
+
+        const ws = XLSX.utils.json_to_sheet(jsonData["테스트_결과"]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "테스트_결과");
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filePath + '/test_results.xlsx');
+    }
+</script>
+</body>
+</html>

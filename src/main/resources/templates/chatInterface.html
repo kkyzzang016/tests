@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        <div class="bot-message">안녕하세요! 대화를 시작해보세요.</div>
+    </div>
+    <div class="input-box">
+        <input type="text" id="user-input" placeholder="메시지를 입력하세요...">
+        <button onclick="sendMessage()">전송</button>
+    </div>
+</div>
+<script>
+    function sendMessage() {
+        var userInput = document.getElementById("user-input").value;
+
+        var xhr = new XMLHttpRequest();
+        var url = "/chat/openai";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+
+                    // choices 배열의 첫 번째 요소에 있는 message 객체의 content 속성을 가져옴
+                    var chatMessage = response.choices[0].message.content;
+
+                    // 채팅 박스에 새로운 메시지 추가
+                    var chatBox = document.getElementById("chat-box");
+
+                    var myMessage = document.createElement("div");
+                    myMessage.textContent = userInput;
+                    myMessage.className = "user-message";
+                    chatBox.appendChild(myMessage);
+
+                    var newMessage = document.createElement("div");
+                    newMessage.textContent = chatMessage;
+                    newMessage.className = "bot-message";
+                    chatBox.appendChild(newMessage);
+
+                    // 스크롤 맨 아래로 이동
+                    chatBox.scrollTop = chatBox.scrollHeight;
+
+                    // 대화 입력창 초기화
+                    document.getElementById("user-input").value = '';
+                } else {
+                    // 오류 처리를 수행합니다.
+                }
+            }
+        };
+
+        xhr.send(userInput);
+    }
+
+    // Enter 키 눌렀을 때 이벤트 처리
+    document.getElementById("user-input").addEventListener("keypress", function(event) {
+        // Enter 키를 눌렀을 때
+        if (event.keyCode === 13) {
+            // 전송 함수 호출
+            sendMessage();
+        }
+    });
+</script>
+</body>
+</html>
