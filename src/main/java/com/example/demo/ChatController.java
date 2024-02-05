@@ -30,7 +30,7 @@ public class ChatController {
         try {
             // OpenAI API 엔드포인트 및 키
             String endpointUrl = "https://api.openai.com/v1/chat/completions";
-            String apiKey = "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";
+            String apiKey = "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";
 
             // 요청 데이터 설정
             OpenAIRequest request = new OpenAIRequest();
